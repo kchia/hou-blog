@@ -1,0 +1,79 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Posts</h1>
+<h2 class="title-2">Welcome to Hou's Blog</h2>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Body</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @posts.each do |post| %>
+      <tr>
+        <td><%= post.title %></td>
+        <td><%= post.body %></td>
+        <td><%= link_to 'Show', post %></td>
+        <td><%= link_to 'Edit', edit_post_path(post) %></td>
+        <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Post', new_post_path %>
+
+<script>
+    // const productSchoolLat = "37.796465";
+    // const productSchoolLng = "-122.402492";
+  
+    // $.ajax({
+    //   url: 'api/v1/weather',
+    //   type: 'GET',
+    //   data: { lat: productSchoolLat, lng: productSchoolLng } ,
+    //   contentType: 'application/json; charset=utf-8',
+    //   success: function (response) {
+    //     console.log(response);
+    //   },
+    //   error: function (error) {
+    //     console.log(error);
+    //   }
+    // });
+    // function getRandomColor(){
+    //   return "#000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);});
+    // }
+    // function changeTitleColor(){
+    //   var randomColor = getRandomColor()
+    //   $(".title-1").css({color: randomColor})
+    // }
+    
+    // $('.background-image').on('click', changeTitleColor);
+        
+        navigator.geolocation.getCurrentPosition((location) => {
+          var latitude = location.coords.latitude
+          var longitude = location.coords.longitude
+          
+            $.ajax({
+                  url: 'api/v1/weather',
+                  type: 'GET',
+                  data: { lat: latitude, lon: longitude} ,
+                  contentType: 'application/json; charset=utf-8',
+                  success: function (response) {
+                    console.log(response);
+                    $(".title-2").replaceWith(
+                      "<h2 class='title-2'>It is currently "+ 
+                      response.currently.temperature + 
+                      " degrees. It is a " + response["currently"]["summary"].toLowerCase() + " day</h2>");
+                  },
+                  error: function (response) {
+                      console.log(response);
+                  }
+              });
+        });
+</script>
